@@ -1,0 +1,33 @@
+{
+  "name": "flit-cli",
+  "version": "0.0.2",
+  "description": "The flit command line interface.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "flit": "./bin/flit.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/taoyuan/flit-cli.git"
+  },
+  "author": "Tao Yuan",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/taoyuan/flit-cli/issues"
+  },
+  "homepage": "https://github.com/taoyuan/flit-cli",
+  "dependencies": {
+    "archy": "0.0.2",
+    "chalk": "^0.4.0",
+    "commander": "^2.2.0",
+    "interpret": "^0.3.3",
+    "liftoff": "^0.11.3",
+    "lodash": "^2.4.1",
+    "nomnom": "taoyuan/nomnom",
+    "semver": "^2.3.1",
+    "tildify": "^0.2.0"
+  }
+}

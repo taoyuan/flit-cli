@@ -1,6 +1,6 @@
 {
   "name": "flit-cli",
-  "version": "0.0.3gu",
+  "version": "0.0.4",
   "description": "The flit command line interface.",
   "main": "index.js",
   "scripts": {

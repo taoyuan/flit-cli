@@ -3,7 +3,6 @@
 var _ = require('lodash');
 var path = require('path');
 var chalk = require('chalk');
-var semver = require('semver');
 var Liftoff = require('liftoff');
 var tildify = require('tildify');
 var interpret = require('interpret');

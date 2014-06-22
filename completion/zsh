@@ -17,7 +17,7 @@
 # Enable zsh autocompletion.
 function _flit_completion() {
   # Grab tasks
-  compls=$(flit --tasks-simple)
+  compls=$(flit --tasks)
   completions=(${=compls})
   compadd -- $completions
 }

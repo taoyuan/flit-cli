@@ -19,7 +19,7 @@ function _flit_completions() {
   # The currently-being-completed word.
   local cur="${COMP_WORDS[COMP_CWORD]}"
   #Grab tasks
-  local compls=$(flit --tasks-simple)
+  local compls=$(flit --tasks)
   # Tell complete what stuff to show.
   COMPREPLY=($(compgen -W "$compls" -- "$cur"))
 }

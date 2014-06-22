@@ -40,7 +40,7 @@ $flit_completion_Process = {
 	if($cache.ContainsKey($sha1flitFile)){
 		$tasks = $cache[$sha1flitFile];
 	} else {
-		$tasks = (flit --tasks-simple).split('\n');
+		$tasks = (flit --tasks).split('\n');
 		$cache[$sha1flitFile] = $tasks;
 	}
 

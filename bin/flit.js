@@ -22,31 +22,31 @@ var od = {
     'help': {
         alias: 'h',
         flag: true,
-        description: 'Display this help text.'
+        help: 'Display this help text.'
     },
     'base': {
-        description: 'Specify an alternate base path. By default, all file paths are relative to the flitfile.'
+        help: 'Specify an alternate base path. By default, all file paths are relative to the flitfile.'
     },
     'flitfile': {
-        description: 'Specify an alternate flitfile. By default, flit looks in the ' +
+        help: 'Specify an alternate flitfile. By default, flit looks in the ' +
             'current or parent directories for the nearest flitfile.js or flitfile.coffee file.'
     },
     'require': {
         alias: 'r',
-        description: 'Modules to pre-load'
+        help: 'Modules to pre-load'
     },
     'verbose': {
         alias: 'v',
         flag: true,
-        description: 'Verbose mode. A lot more information output.'
+        help: 'Verbose mode. A lot more information output.'
     },
     'version': {
         alias: 'V',
         flag: true,
-        description: 'Print the flit version. Combine with --verbose for more info.'
+        help: 'Print the flit version. Combine with --verbose for more info.'
     },
     'completion': {
-        description: 'Output shell auto-completion rules.'
+        help: 'Output shell auto-completion rules.'
     }
 };
 

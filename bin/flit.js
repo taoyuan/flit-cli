@@ -18,7 +18,8 @@ process.env.INIT_CWD = process.cwd();
 
 var pkg = require('../package');
 
-var ops = {
+// Options Definition
+var od = {
     'help': {
         alias: 'h',
         flag: true,
@@ -28,9 +29,8 @@ var ops = {
         description: 'Specify an alternate base path. By default, all file paths are relative to the flitfile.'
     },
     'flitfile': {
-        description: 'Specify an alternate flitfile. By default, flit looks in the' +
-            'current or parent directories for the nearest flitfile.js or' +
-            'flitfile.coffee file.'
+        description: 'Specify an alternate flitfile. By default, flit looks in the ' +
+            'current or parent directories for the nearest flitfile.js or flitfile.coffee file.'
     },
     'require': {
         alias: 'r',
@@ -51,14 +51,12 @@ var ops = {
     }
 };
 
-var argo = nomnom(ops);
-var options = argo.parse();
+var parser = nomnom(od);
+var options = parser.parse();
 
 // Do stuff based on CLI options.
 if ('completion' in options) {
     completion(options.completion);
-} else if (options.version) {
-    console.log(pkg.name, 'v' + pkg.version);
 }
 
 var cli = new Liftoff({
@@ -69,7 +67,9 @@ var cli = new Liftoff({
 
 // wire up a few err listeners to liftoff
 cli.on('require', function (name) {
-    if (options.verbose) logger.log('Requiring external module', chalk.magenta(name));
+    if (options.verbose) {
+        logger.log('Requiring external module', chalk.magenta(name));
+    }
 });
 
 cli.on('requireFail', function (name) {
@@ -84,12 +84,15 @@ cli.launch({
 }, invoke);
 
 function invoke(env) {
+    if (options.version) {
+        console.log(pkg.name, 'v' + pkg.version);
+    }
+
     if (!env.modulePath || !env.configPath) {
         if (options.help) {
-            argo.print(argo.getUsage());
-        } else if (options.version) {
-            process.exit(0);
+            return console.log(parser.getUsage());
         }
+        if (options.version) return;
     }
 
     if (!env.modulePath) {
@@ -106,46 +109,7 @@ function invoke(env) {
         process.exit(1);
     }
 
-    var flit = require(env.modulePath);
-
-    // this is what actually loads up the flitfile
-    var flitConfig = require(env.configPath);
-    if (typeof flitConfig === 'function') flitConfig(flit);
-
-    argo = nomnom(ops, flit.tools);
-    options = argo.parse();
-
-    var _tasks, _options;
-    if (options.version) {
-        logger.log('flit v' + flit.version);
-        if (options.verbose) {
-            // --verbose
-            console.log('Install path: ' + chalk.magenta(tildify(path.dirname(env.modulePath))));
-
-            // Display available tasks (for shell completion, etc).
-            _tasks = Object.keys(flit.tasks).sort();
-            console.log('Available tasks: ' + chalk.magenta(_tasks.join(' ')));
-
-            _options = [];
-            _.reduce(argo.specs, function (result, item) {
-                if (item.position == undefined) {
-                    _options.push('--' + item.name);
-                    if (item.abbr) {
-                        _options.push('-' + item.abbr);
-                    }
-                }
-            });
-            console.log('Available options: ' + chalk.magenta(_options.join(' ')));
-        }
-
-        return;
-    }
-
-    if (options.help) {
-        argo.print(argo.getUsage());
-    }
-
-    flit.cli(env, options);
+    require(env.modulePath).cli(env, nomnom.bind(null, od));
 }
 
 function nomnom() {
@@ -162,11 +126,17 @@ function nomnom() {
     });
 
     function parse(option) {
-        return {
-            abbr: option.shortcut || option.short || option.alias,
-            help: option.description || option.desc || option.help,
-            flag: option.flag || option.boolean || (option.type == 'boolean')
-        }
+        return _.transform(option, function (result, value, key) {
+            if (['shortcut', 'short', 'alias'].indexOf(key) >= 0) {
+                result.abbr = value;
+            } else if (['description', 'desc', 'help'].indexOf(key) >= 0) {
+                result.help = value;
+            } else if (['flag', 'boolean'].indexOf(key) >= 0 || (key === 'type' && value === 'boolean')) {
+                result.flag = true;
+            } else {
+                result[key] = value;
+            }
+        });
     }
     return _nomnom;
 }

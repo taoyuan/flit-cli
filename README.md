@@ -1,6 +1,8 @@
 flit-cli
 ========
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/taoyuan/flit-cli.svg)](https://greenkeeper.io/)
+
 > The Flit command line interface.
 
 Install this globally and you'll have access to the `flit` command anywhere on your system.
